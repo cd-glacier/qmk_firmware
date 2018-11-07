@@ -30,7 +30,8 @@ enum layer_number {
     _INSERT,
     _LOWER,
     _RAISE,
-    _ADJUST
+    _ADJUST,
+    _VIM_A
 };
 
 enum custom_keycodes {
@@ -40,8 +41,7 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
-  BACKLIT,
-  RGBRST
+  VIM_A
 };
 
 enum macro_keycodes {
@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | Tab  |      |      |      |      |      |             |      |      |Insert|      |      | Bksp |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Ctrl |Insert|      |      |      |      |             | Left | Down |  Up  |Right |      |      |
+   * | Ctrl |VIM_A |      |      |      |      |             | Left | Down |  Up  |Right |      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Shift|      |      |      |      |      |             |      |      |      |      |      |      |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
@@ -76,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_NORMAL] = LAYOUT( \
       KC_TAB,  _______, _______, _______, _______, _______,                    _______, _______, INSERT,  _______,  _______, KC_BSPC,
-      KC_LCTL, INSERT,  _______, _______, _______, _______,                    KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
+      KC_LCTL, VIM_A,   _______, _______, _______, _______,                    KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
       KC_LSFT, _______, _______, _______, _______, _______,                    _______, _______, _______, _______,  _______, _______, \
       _______, _______, KC_LALT, KC_LGUI, _______, KC_SPACE, _______, _______, KC_ENT,  RAISE,   KC_RGUI, KC_RALT,  _______, _______ \
       ),
@@ -89,19 +89,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   B  |             |   N  |   M  |   ,  |   .  |   /  |  -   |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |Normal| xxxx | xxxx | xxxx |Lower |Space |Normal|      |Enter |Raise | xxxx | xxxx | xxxx | xxxx |
+   * |Normal|   _  |  ALt |  GUI | Lower| Space|      |      | Enter| Raise|  GUI |  Alt | xxxx |  =   |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_INSERT] = LAYOUT( \
-      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,  KC_I,    KC_O,    KC_P,    KC_BSPC, \
-      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,  KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
-      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N,    KC_M,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS , \
-      NORMAL,  _______, INSERT,  INSERT,  LOWER, KC_SPACE, NORMAL, _______,  KC_ENT,  RAISE, INSERT,  INSERT,  _______, _______ \
+      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                        KC_Y,    KC_U,  KC_I,    KC_O,    KC_P,    KC_BSPC, \
+      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,  KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
+      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                        KC_N,    KC_M,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS , \
+      NORMAL,  KC_UNDS, KC_LALT, KC_LGUI, LOWER,   KC_SPACE, _______, _______,  KC_ENT,  RAISE, KC_RGUI, KC_RALT, _______, KC_EQL\
       ),
 
   /* Lower
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * |      |      |   1  |   2  |   3  |      |             |      |   _  |   =  |   (  |   )  | Bksp |
+   * |      |      |   1  |   2  |   3  |      |             |   (  |  )   |  [   |   ]  |   {  |  }   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |      |      |   4  |   5  |   6  |      |             | Left | Down |  Up  |Right |      |  |   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
@@ -111,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
   [_LOWER] = LAYOUT( \
-      _______, _______, KC_1,    KC_2,    KC_3,    _______,                   _______, KC_UNDS, KC_EQL, KC_LPRN,  KC_RPRN, KC_BSPC, \
+      _______, _______, KC_1,    KC_2,    KC_3,    _______,                   KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC,  KC_LCBR, KC_RCBR, \
       _______, _______, KC_4,    KC_5,    KC_6,    _______,                   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______, KC_PIPE, \
       _______, _______, KC_7,    KC_8,    KC_9,    KC_0,                      _______, _______, _______, _______,  _______, _______, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______ \
@@ -223,26 +223,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-      //led operations - RGB mode change now updates the RGB_current_mode to allow the right RGB mode to be set after reactive keys are released
-    case RGB_MOD:
-      #ifdef RGBLIGHT_ENABLE
+    case VIM_A:
         if (record->event.pressed) {
-          rgblight_mode(RGB_current_mode);
-          rgblight_step();
-          RGB_current_mode = rgblight_config.mode;
+          SEND_STRING (SS_TAP(X_RIGHT));
+          layer_on(_INSERT);
         }
-      #endif
-      return false;
-      break;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      break;
+        return false;
+        break;
   }
   return true;
 }
