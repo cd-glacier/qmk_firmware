@@ -37,6 +37,7 @@ enum layer_number {
     _RAISE,
     _ADJUST,
     _VIM_COLON,
+    _VIM_G,
 };
 
 enum custom_keycodes {
@@ -56,6 +57,8 @@ enum custom_keycodes {
   VIM_Q,
   VIM_W,
   NEW_TAB,
+  VIM_G,
+  NEXT_TAB,
 };
 
 enum tap_dance_keycodes {
@@ -115,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | tab  |      |      |      | REDO |      |             |VIM_YY|VIM_U |INSERT|VIM_O |VIM_P | Bksp |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Ctrl |VIM_A |      |VIM_DD|      |      |             | Left | Down |  Up  |Right |VIM_: |      |
+   * | Ctrl |VIM_A |      |VIM_DD|      |VIM_G |             | Left | Down |  Up  |Right |VIM_: |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Shift|      |VIM_X |      |      |      |             |      |      |      |      |      |      |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
@@ -124,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_NORMAL] = LAYOUT( \
       KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,     KC_BSPC,
-      KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    _______,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, VIM_COLON, _______, \
+      KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    VIM_G,                      KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, VIM_COLON, _______, \
       KC_LSFT, _______, VIM_X,   _______,    _______,    _______,                    _______,    _______, _______, _______,  _______,   _______, \
       _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______,   _______ \
       ),
@@ -203,7 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Vim Colon
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * |      |  Q   |  W   |      |      |NewTab|             |      |      |      |      |      |      |
+   * |      |VIM_Q |VIM_W |      |      |NewTab|             |      |      |      |      |      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |      |      |      |      |      |      |             |      |      |      |      |NORMAL|      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
@@ -214,6 +217,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_VIM_COLON] = LAYOUT( \
       XXXXXXX, VIM_Q,   VIM_W,   XXXXXXX, XXXXXXX, NEW_TAB,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NORMAL,  XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX \
+      ),
+
+  /* Vim G
+   * ,-----------------------------------------.             ,-----------------------------------------.
+   * |      |      |      |      |      |nextab|             |      |      |      |      |      |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |      |      |             |      |      |      |      |NORMAL|      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+   * `-------------------------------------------------------------------------------------------------'
+   */
+  [_VIM_G] = LAYOUT( \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, NEXT_TAB,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NORMAL,  XXXXXXX, \
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX \
@@ -251,6 +272,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         layer_off(_VIM_COLON);
         layer_off(_INSERT);
+        layer_off(_VIM_G);
         layer_on(_NORMAL);
       }
       return false;
@@ -298,6 +320,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
           layer_off(_NORMAL);
           layer_on(_VIM_COLON);
+        }
+        return false;
+        break;
+    case VIM_G:
+        if (record->event.pressed) {
+          layer_off(_NORMAL);
+          layer_on(_VIM_G);
         }
         return false;
         break;
@@ -366,6 +395,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(_VIM_COLON);
           layer_on(_NORMAL);
           return false;
+        }
+        break;
+    case NEXT_TAB:
+        if (record->event.pressed) {
+          if (keycode == KC_LSFT || keycode == KC_RSFT) { // if lshit -> g -> t
+            SEND_STRING(SS_DOWN(X_LSHIFT));
+            SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
+            SEND_STRING(SS_UP(X_LSHIFT));
+            layer_off(_VIM_G);
+            layer_on(_NORMAL);
+            return false;
+          } else {
+            SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
+            layer_off(_VIM_G);
+            layer_on(_NORMAL);
+            return false;
+          }
         }
         break;
   }
@@ -455,6 +501,7 @@ void matrix_update(struct CharacterMatrix *dest,
 #define L_ADJUST (1<<_ADJUST)
 #define L_ADJUST_TRI (L_ADJUST|L_RAISE|L_LOWER)
 #define L_VIM_COLON (1<<_VIM_COLON)
+#define L_VIM_G (1<<_VIM_G)
 
 static void render_logo(struct CharacterMatrix *matrix) {
 
@@ -509,6 +556,9 @@ void render_status(struct CharacterMatrix *matrix) {
            break;
         case L_VIM_COLON:
            matrix_write_P(matrix, PSTR("Colon :"));
+           break;
+        case L_VIM_G:
+           matrix_write_P(matrix, PSTR("Vim G"));
            break;
         default:
            matrix_write(matrix, buf);
