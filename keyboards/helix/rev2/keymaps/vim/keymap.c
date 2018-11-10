@@ -246,6 +246,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_LOWER);
         layer_on(_INSERT);
       }
+      update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       return false;
       break;
     case RAISE:
@@ -256,13 +257,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_RAISE);
         layer_on(_INSERT);
       }
+      update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       return false;
       break;
     case ADJUST:
         if (record->event.pressed) {
+          layer_off(_INSERT);
           layer_on(_ADJUST);
         } else {
           layer_off(_ADJUST);
+          layer_on(_INSERT);
         }
         return false;
         break;
@@ -363,8 +367,8 @@ __attribute__ ((weak))
 void led_test_init(void) {}
 
 void matrix_scan_user(void) {
-     led_test_init();
-     iota_gfx_task();  // this is what updates the display continuously
+  led_test_init();
+  iota_gfx_task();  // this is what updates the display continuously
 }
 
 void matrix_update(struct CharacterMatrix *dest,
@@ -382,7 +386,7 @@ void matrix_update(struct CharacterMatrix *dest,
 #define L_LOWER (1<<_LOWER)
 #define L_RAISE (1<<_RAISE)
 #define L_ADJUST (1<<_ADJUST)
-#define L_ADJUST_TRI (L_ADJUST|L_RAISE|L_INSERT)
+#define L_ADJUST_TRI (L_ADJUST|L_RAISE|L_LOWER)
 
 static void render_logo(struct CharacterMatrix *matrix) {
 
