@@ -78,6 +78,8 @@ void vim_yy (qk_tap_dance_state_t *state, void *user_data) {
     SEND_STRING(SS_UP(X_LSHIFT));
     SEND_STRING(SS_LGUI("c"));
     reset_tap_dance (state);
+  } else {
+    SEND_STRING(SS_LGUI("c"));
   }
 }
 
@@ -106,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Normal
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * | tab  |      |      |      | REDO |      |             |VIM_YY|VIM_U |INSERT|VIM_O |VIM_P |      |
+   * | tab  |      |      |      | REDO |      |             |VIM_YY|VIM_U |INSERT|VIM_O |VIM_P | Bksp |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Ctrl |VIM_A |      |VIM_DD|      |      |             | Left | Down |  Up  |Right |      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
@@ -116,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
   [_NORMAL] = LAYOUT( \
-      KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,   _______,
+      KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,   KC_BSPC,
       KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    _______,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
       KC_LSFT, _______, VIM_X,   _______,    _______,    _______,                    _______,    _______, _______, _______,  _______, _______, \
       _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______, _______ \
