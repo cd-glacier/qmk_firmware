@@ -31,8 +31,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 200
 
-/* Use I2C or Serial */
-#define USE_I2C
+#define LEADER_TIMEOUT 200
+
+/* Use I2C or Serial */ #define USE_I2C
 #define USE_SERIAL
 //#define USE_MATRIX_I2C
 
@@ -160,6 +161,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_ONESHOT
 //#define NO_ACTION_MACRO
 //#define NO_ACTION_FUNCTION
-
 
 #endif
