@@ -31,7 +31,6 @@ enum layer_number {
     _LOWER,
     _RAISE,
     _ADJUST,
-    _VIM_A
 };
 
 enum custom_keycodes {
@@ -41,7 +40,8 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
-  VIM_A
+  VIM_A,
+  VIM_O,
 };
 
 enum macro_keycodes {
@@ -65,8 +65,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Normal
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * | Tab  |      |      |      |      |      |             |      |      |Insert|      |      | Bksp |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * | Tab  |      |      |      |      |      |             |      |      |Insert|VIM_O |      | Bksp |
+   * |------+------+------+------+------+------|             |------+------+------+-----+------+------|
    * | Ctrl |VIM_A |      |      |      |      |             | Left | Down |  Up  |Right |      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Shift|      |      |      |      |      |             |      |      |      |      |      |      |
@@ -75,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
   [_NORMAL] = LAYOUT( \
-      KC_TAB,  _______, _______, _______, _______, _______,                    _______, _______, INSERT,  _______,  _______, KC_BSPC,
+      KC_TAB,  _______, _______, _______, _______, _______,                    _______, _______, INSERT,  VIM_O,    _______, KC_BSPC,
       KC_LCTL, VIM_A,   _______, _______, _______, _______,                    KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
       KC_LSFT, _______, _______, _______, _______, _______,                    _______, _______, _______, _______,  _______, _______, \
       _______, _______, KC_LALT, KC_LGUI, _______, KC_SPACE, _______, _______, KC_ENT,  RAISE,   KC_RGUI, KC_RALT,  _______, _______ \
@@ -229,6 +229,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_on(_INSERT);
         }
         return false;
+        break;
+    case VIM_O:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
+          SEND_STRING(SS_TAP(X_ENTER));
+          layer_on(_INSERT);
+          return false;
+        }
         break;
   }
   return true;
