@@ -48,6 +48,8 @@ enum custom_keycodes {
   VIM_A,
   VIM_O,
   VIM_P,
+  VIM_U,
+  VIM_CTRL_R,
 };
 
 enum tap_dance_keycodes {
@@ -103,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Normal
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * | Tab  |      |      |      |      |      |             |VIM_YY|      |Insert|VIM_O |VIM_P | Bksp |
+   * | tab  |      |      |      | REDO |      |             |vim_yy|VIM_U |insert|vim_o |vim_p | bksp |
    * |------+------+------+------+------+------|             |------+------+------+-----+------+------|
    * | Ctrl |VIM_A |      |VIM_DD|      |      |             | Left | Down |  Up  |Right |      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
@@ -113,10 +115,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
   [_NORMAL] = LAYOUT( \
-      KC_TAB,  _______, _______, _______,     _______, _______,                    TD(VIM_YY), _______, INSERT,  VIM_O,    VIM_P,   KC_BSPC,
-      KC_LCTL, VIM_A,   _______, TD(VIM_DD),  _______, _______,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
-      KC_LSFT, _______, _______, _______,     _______, _______,                    _______,    _______, _______, _______,  _______, _______, \
-      _______, _______, KC_LALT, KC_LGUI,     _______, KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______, _______ \
+      KC_TAB,  _______, _______, _______,   VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,   KC_BSPC,
+      KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    _______,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
+      KC_LSFT, _______, _______, _______,    _______,    _______,                    _______,    _______, _______, _______,  _______, _______, \
+      _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______, _______ \
       ),
 
   /* Insert
@@ -281,6 +283,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case VIM_P:
         if (record->event.pressed) {
           SEND_STRING(SS_LGUI("v"));
+          return false;
+        }
+        break;
+    case VIM_U:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("z"));
+          return false;
+        }
+        break;
+    case VIM_CTRL_R:
+        if (record->event.pressed) {
+          SEND_STRING(SS_DOWN(X_LSHIFT));
+          SEND_STRING(SS_LGUI("z"));
+          SEND_STRING(SS_UP(X_LSHIFT));
           return false;
         }
         break;
