@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 200
 
-#define LEADER_TIMEOUT 200
+#define LEADER_TIMEOUT 300
 
 /* Use I2C or Serial */ #define USE_I2C
 #define USE_SERIAL

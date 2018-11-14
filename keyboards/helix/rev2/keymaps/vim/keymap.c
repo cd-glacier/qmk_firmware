@@ -31,13 +31,11 @@ extern uint8_t is_master;
 // entirely and just use numbers.
 enum layer_number {
     _BASE = 0,
-    _NORMAL,
     _INSERT,
+    _NORMAL,
     _LOWER,
     _RAISE,
     _ADJUST,
-    _VIM_COLON,
-    _VIM_G,
 };
 
 enum custom_keycodes {
@@ -53,12 +51,6 @@ enum custom_keycodes {
   VIM_U,
   VIM_CTRL_R,
   VIM_X,
-  VIM_COLON,
-  VIM_Q,
-  VIM_W,
-  NEW_TAB,
-  VIM_G,
-  NEXT_TAB,
 };
 
 enum tap_dance_keycodes {
@@ -114,24 +106,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  /* Normal
-   * ,-----------------------------------------.             ,-----------------------------------------.
-   * | tab  |      |      |      | REDO |      |             |VIM_YY|VIM_U |INSERT|VIM_O |VIM_P | Bksp |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Ctrl |VIM_A |      |VIM_DD|      |VIM_G |             | Left | Down |  Up  |Right |VIM_: |      |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Shift|      |VIM_X |      |      |      |             |      |      |      |      |      |      |
-   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |      |      |  Alt |  GUI |      |Space |      |      |Enter |Raise | GUI  | Alt  |      |      |
-   * `-------------------------------------------------------------------------------------------------'
-   */
-  [_NORMAL] = LAYOUT( \
-      KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,     KC_BSPC,
-      KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    VIM_G,                      KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, VIM_COLON, _______, \
-      KC_LSFT, _______, VIM_X,   _______,    _______,    _______,                    _______,    _______, _______, _______,  _______,   _______, \
-      _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______,   _______ \
-      ),
-
   /* Insert
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | Tab  |   Q  |   W  |   E  |   R  |   T  |             |   Y  |   U  |   I  |   O  |   P  | Bksp |
@@ -148,6 +122,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                        KC_H,    KC_J,  KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                        KC_N,    KC_M,  KC_COMM, KC_DOT,  KC_SLSH, KC_MINS , \
       NORMAL,  KC_UNDS, KC_LALT, KC_LGUI, LOWER,   KC_SPACE, _______, _______,  KC_ENT,  RAISE, KC_RGUI, KC_RALT, XXXXXXX, KC_EQL\
+      ),
+
+  /* Normal
+   * ,-----------------------------------------.             ,-----------------------------------------.
+   * | tab  |      |      |      | REDO |      |             |VIM_YY|VIM_U |INSERT|VIM_O |VIM_P | Bksp |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * | Ctrl |VIM_A |      |VIM_DD|      |Leader|             | Left | Down |  Up  |Right |Leader|      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * | Shift|      |VIM_X |      |      |      |             |      |      |      |      |      |      |
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
+   * |      |      |  Alt |  GUI |      |Space |      |      |Enter |Raise | GUI  | Alt  |      |      |
+   * `-------------------------------------------------------------------------------------------------'
+   */
+  [_NORMAL] = LAYOUT( \
+      KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,    KC_BSPC,
+      KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    KC_LEAD,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, KC_LEAD,  _______, \
+      KC_LSFT, _______, VIM_X,   _______,    _______,    _______,                    _______,    _______, _______, _______,  _______,  _______, \
+      _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______,  _______ \
       ),
 
   /* Lower
@@ -203,42 +195,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, _______, _______, _______, _______,                   _______, _______, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SMOD,RGB_HUD, RGB_SAD, RGB_VAD \
       ),
-
-  /* Vim Colon
-   * ,-----------------------------------------.             ,-----------------------------------------.
-   * |      |VIM_Q |VIM_W |      |      |NewTab|             |      |      |      |      |      |      |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |      |      |      |      |NORMAL|      |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
-   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
-   * `-------------------------------------------------------------------------------------------------'
-   */
-  [_VIM_COLON] = LAYOUT( \
-      XXXXXXX, VIM_Q,   VIM_W,   XXXXXXX, XXXXXXX, NEW_TAB,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NORMAL,  XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX \
-      ),
-
-  /* Vim G
-   * ,-----------------------------------------.             ,-----------------------------------------.
-   * |      |      |      |      |      |nextab|             |      |      |      |      |      |      |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |      |      |      |      |NORMAL|      |
-   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
-   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
-   * `-------------------------------------------------------------------------------------------------'
-   */
-  [_VIM_G] = LAYOUT( \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, NEXT_TAB,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NORMAL,  XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX \
-      ),
 };
 
 #else
@@ -270,9 +226,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case NORMAL:
       if (record->event.pressed) {
-        layer_off(_VIM_COLON);
         layer_off(_INSERT);
-        layer_off(_VIM_G);
         layer_on(_NORMAL);
       }
       return false;
@@ -286,6 +240,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case LOWER:
       if (record->event.pressed) {
+        layer_off(_NORMAL);
         layer_off(_INSERT);
         layer_on(_LOWER);
       } else {
@@ -297,6 +252,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case RAISE:
       if (record->event.pressed) {
+        layer_off(_NORMAL);
         layer_off(_INSERT);
         layer_on(_RAISE);
       } else {
@@ -308,25 +264,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case ADJUST:
         if (record->event.pressed) {
+          layer_off(_NORMAL);
           layer_off(_INSERT);
           layer_on(_ADJUST);
         } else {
           layer_off(_ADJUST);
           layer_on(_INSERT);
-        }
-        return false;
-        break;
-    case VIM_COLON:
-        if (record->event.pressed) {
-          layer_off(_NORMAL);
-          layer_on(_VIM_COLON);
-        }
-        return false;
-        break;
-    case VIM_G:
-        if (record->event.pressed) {
-          layer_off(_NORMAL);
-          layer_on(_VIM_G);
         }
         return false;
         break;
@@ -371,47 +314,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
           SEND_STRING(SS_TAP(X_DELETE));
           return false;
-        }
-        break;
-    case VIM_Q:
-        if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("w"));
-          layer_off(_VIM_COLON);
-          layer_on(_NORMAL);
-          return false;
-        }
-        break;
-    case VIM_W:
-        if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("s"));
-          layer_off(_VIM_COLON);
-          layer_on(_NORMAL);
-          return false;
-        }
-        break;
-    case NEW_TAB:
-        if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("t"));
-          layer_off(_VIM_COLON);
-          layer_on(_NORMAL);
-          return false;
-        }
-        break;
-    case NEXT_TAB:
-        if (record->event.pressed) {
-          if (keycode == KC_LSFT || keycode == KC_RSFT) { // if lshit -> g -> t
-            SEND_STRING(SS_DOWN(X_LSHIFT));
-            SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
-            SEND_STRING(SS_UP(X_LSHIFT));
-            layer_off(_VIM_G);
-            layer_on(_NORMAL);
-            return false;
-          } else {
-            SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
-            layer_off(_VIM_G);
-            layer_on(_NORMAL);
-            return false;
-          }
         }
         break;
   }
@@ -477,10 +379,32 @@ void matrix_scan_user(void) {
     leading = false;
     leader_end();
 
-    SEQ_ONE_KEY(KC_F) {
-      // Anything you can do in a macro.
-      SEND_STRING("QMK is awesome.");
+    // :w
+    SEQ_ONE_KEY(KC_W) {
+      SEND_STRING(SS_LGUI("s"));
     }
+
+    // :q
+    SEQ_ONE_KEY(KC_Q) {
+      SEND_STRING(SS_LGUI("w"));
+    }
+
+    // :wq
+    SEQ_TWO_KEYS(KC_W, KC_Q) {
+      SEND_STRING(SS_LGUI("s"));
+      SEND_STRING(SS_LGUI("w"));
+    }
+
+    // :q!
+    SEQ_TWO_KEYS(KC_W, KC_Q) {
+      SEND_STRING(SS_LGUI("q"));
+    }
+
+    // gt
+    SEQ_ONE_KEY(KC_T) {
+      SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
+    }
+
   }
 }
 
@@ -500,8 +424,6 @@ void matrix_update(struct CharacterMatrix *dest,
 #define L_RAISE (1<<_RAISE)
 #define L_ADJUST (1<<_ADJUST)
 #define L_ADJUST_TRI (L_ADJUST|L_RAISE|L_LOWER)
-#define L_VIM_COLON (1<<_VIM_COLON)
-#define L_VIM_G (1<<_VIM_G)
 
 static void render_logo(struct CharacterMatrix *matrix) {
 
@@ -536,13 +458,11 @@ void render_status(struct CharacterMatrix *matrix) {
   matrix_write_P(matrix, PSTR("\nLayer: "));
     switch (layer_state) {
         case L_BASE:
-           matrix_write_P(matrix, PSTR("Normal"));
+        case L_INSERT:
+           matrix_write_P(matrix, PSTR("Insert"));
            break;
         case L_NORMAL:
            matrix_write_P(matrix, PSTR("Normal"));
-           break;
-        case L_INSERT:
-           matrix_write_P(matrix, PSTR("Insert"));
            break;
         case L_LOWER:
            matrix_write_P(matrix, PSTR("Lower"));
@@ -553,12 +473,6 @@ void render_status(struct CharacterMatrix *matrix) {
         case L_ADJUST:
         case L_ADJUST_TRI:
            matrix_write_P(matrix, PSTR("Adjust"));
-           break;
-        case L_VIM_COLON:
-           matrix_write_P(matrix, PSTR("Colon :"));
-           break;
-        case L_VIM_G:
-           matrix_write_P(matrix, PSTR("Vim G"));
            break;
         default:
            matrix_write(matrix, buf);
