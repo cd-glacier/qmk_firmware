@@ -33,6 +33,7 @@ enum layer_number {
     _BASE = 0,
     _INSERT,
     _NORMAL,
+    _VISUAL,
     _LOWER,
     _RAISE,
     _ADJUST,
@@ -42,6 +43,7 @@ enum custom_keycodes {
   BASE = SAFE_RANGE,
   NORMAL,
   INSERT,
+  VISUAL,
   LOWER,
   RAISE,
   ADJUST,
@@ -51,6 +53,8 @@ enum custom_keycodes {
   VIM_U,
   VIM_CTRL_R,
   VIM_X,
+  V_CUT,
+  V_YANK,
 };
 
 enum tap_dance_keycodes {
@@ -130,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * | Ctrl |VIM_A |      |VIM_DD|      |Leader|             | Left | Down |  Up  |Right |Leader|      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Shift|      |VIM_X |      |      |      |             |      |      |      |      |      |      |
+   * | Shift|      |VIM_X |      |Visual|      |             |      |      |      |      |      |      |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
    * |      |      |  Alt |  GUI |      |Space |      |      |Enter |Raise | GUI  | Alt  |      |      |
    * `-------------------------------------------------------------------------------------------------'
@@ -138,8 +142,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NORMAL] = LAYOUT( \
       KC_TAB,  _______, _______, _______,    VIM_CTRL_R, _______,                    TD(VIM_YY), VIM_U,   INSERT,  VIM_O,    VIM_P,    KC_BSPC,
       KC_LCTL, VIM_A,   _______, TD(VIM_DD), _______,    KC_LEAD,                    KC_LEFT,    KC_DOWN, KC_UP,   KC_RIGHT, KC_LEAD,  _______, \
-      KC_LSFT, _______, VIM_X,   _______,    _______,    _______,                    _______,    _______, _______, _______,  _______,  _______, \
+      KC_LSFT, _______, VIM_X,   _______,    VISUAL,     _______,                    _______,    _______, _______, _______,  _______,  _______, \
       _______, _______, KC_LALT, KC_LGUI,    _______,    KC_SPACE, _______, _______, KC_ENT,     RAISE,   KC_RGUI, KC_RALT,  _______,  _______ \
+      ),
+
+  /* Visual
+   * ,-----------------------------------------.             ,-----------------------------------------.
+   * |      |      |      |      |      |      |             |V_YANK|      |      |      |      |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |V_CUT |      |             | Left | Down |  Up  |Right |      |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
+   * `-------------------------------------------------------------------------------------------------'
+   */
+  [_VISUAL] = LAYOUT( \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   V_YANK,  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, V_CUT,   XXXXXXX, XXXXXXX,                   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, XXXXXXX, XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, \
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX \
       ),
 
   /* Lower
@@ -149,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |      |      |   4  |   5  |   6  |      |             | Left | Down |  Up  |Right |      |  |   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |      |      |   7  |   8  |   9  |   0  |             |      |      |      |      |      |      |
-  * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
+   * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
    * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
    * `-------------------------------------------------------------------------------------------------'
    */
@@ -227,6 +249,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case NORMAL:
       if (record->event.pressed) {
         layer_off(_INSERT);
+        layer_off(_VISUAL);
         layer_on(_NORMAL);
       }
       return false;
@@ -235,6 +258,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         layer_off(_NORMAL);
         layer_on(_INSERT);
+      }
+      return false;
+      break;
+    case VISUAL:
+      if (record->event.pressed) {
+        layer_off(_NORMAL);
+        layer_on(_VISUAL);
+        SEND_STRING(SS_DOWN(X_LSHIFT));
       }
       return false;
       break;
@@ -316,6 +347,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
         }
         break;
+    case V_CUT:
+        if (record->event.pressed) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_LGUI("x"));
+          layer_off(_VISUAL);
+          layer_on(_NORMAL);
+          return false;
+        }
+        break;
+    case V_YANK:
+        if (record->event.pressed) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_LGUI("c"));
+          layer_off(_VISUAL);
+          layer_on(_NORMAL);
+          return false;
+        }
+        break;
   }
   return true;
 }
@@ -387,17 +436,6 @@ void matrix_scan_user(void) {
     // :q
     SEQ_ONE_KEY(KC_Q) {
       SEND_STRING(SS_LGUI("w"));
-    }
-
-    // :wq
-    SEQ_TWO_KEYS(KC_W, KC_Q) {
-      SEND_STRING(SS_LGUI("s"));
-      SEND_STRING(SS_LGUI("w"));
-    }
-
-    // :q!
-    SEQ_TWO_KEYS(KC_W, KC_Q) {
-      SEND_STRING(SS_LGUI("q"));
     }
 
     // gt
