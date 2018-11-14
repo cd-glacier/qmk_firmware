@@ -405,6 +405,11 @@ void matrix_scan_user(void) {
       SEND_STRING(SS_LCTRL(SS_TAP(X_TAB)));
     }
 
+    // gg
+    SEQ_ONE_KEY(KC_LEAD) {
+      SEND_STRING(SS_TAP(X_HOME));
+    }
+
   }
 }
 
