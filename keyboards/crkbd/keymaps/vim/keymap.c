@@ -40,6 +40,7 @@ enum custom_keycodes {
   ADJUST,
 
   VIM_A,
+  VIM_O,
   VISUAL_CUT,
   VISUAL_YANK,
 
@@ -73,6 +74,7 @@ enum macro_keycodes {
 #define KC_INSERT INSERT
 #define KC_VISUAL VISUAL
 #define KC_VIM_A VIM_A
+#define KC_VIM_O VIM_O
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
 
@@ -91,11 +93,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NORMAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,INSERT,  TRNS,  TRNS,  BSPC,\
+        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,INSERT, VIM_O,  TRNS,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL, VIM_A,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,  TRNS,  TRNS,  TRNS,VISUAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       LSFT,  TRNS,   DEL,  TRNS,VISUAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                    LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
@@ -358,6 +360,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_on(_INSERT);
         }
         return false;
+        break;
+    case VIM_O:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
+          SEND_STRING(SS_TAP(X_ENTER));
+          layer_off(_NORMAL);
+          layer_on(_INSERT);
+          return false;
+        }
         break;
     case VISUAL_CUT:
         if (record->event.pressed) {
