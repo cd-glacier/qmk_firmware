@@ -32,6 +32,7 @@ enum layer_number {
 enum custom_keycodes {
   BASE = SAFE_RANGE,
   INSERT,
+  NORMAL,
   LOWER,
   RAISE,
   ADJUST,
@@ -61,7 +62,8 @@ enum macro_keycodes {
 #define KC_GUIEI GUI_T(KC_LANG2)
 #define KC_ALTKN ALT_T(KC_LANG1)
 
-#define KC_SFTESC MT(KC_LSFT, KC_ESC)
+#define KC_NORMAL NORMAL
+#define KC_INSERT INSERT
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -72,7 +74,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  MINS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   UNDS, LOWER,   SPC,      ENT, RAISE,  RGUI\
+                                 NORMAL, LOWER,   SPC,      ENT, RAISE,  RGUI\
+                              //`--------------------'  `--------------------'
+  ),
+
+  [_NORMAL] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,INSERT,  TRNS,  TRNS,  BSPC,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       LCTL,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       LSFT,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                   LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
   ),
 
@@ -96,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                    GRV,  BSLS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LALT,  LGUI,   SPC,      ENT, RAISE, ALTKN \
+                                   LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
   ),
 
@@ -198,7 +212,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case INSERT:
       if (record->event.pressed) {
+        layer_off(_NORMAL);
+        layer_off(_VISUAL);
+        layer_on(_INSERT);
         persistent_default_layer_set(1UL<<_INSERT);
+      }
+      return false;
+      break;
+    case NORMAL:
+      if (record->event.pressed) {
+        layer_off(_INSERT);
+        layer_off(_VISUAL);
+        layer_on(_NORMAL);
       }
       return false;
       break;
