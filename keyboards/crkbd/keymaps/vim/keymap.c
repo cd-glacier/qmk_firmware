@@ -21,11 +21,14 @@ extern uint8_t is_master;
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _INSERT 0
-#define _LOWER 3
-#define _RAISE 4
-#define _ADJUST 16
-
+enum layer_number {
+    _INSERT = 0,
+    _NORMAL,
+    _VISUAL,
+    _LOWER,
+    _RAISE,
+    _ADJUST,
+};
 enum custom_keycodes {
   BASE = SAFE_RANGE,
   INSERT,
@@ -75,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_LOWER] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        ESC,  TRNS,     1,     2,     3,  TRNS,                   LPRN,  RPRN,  LBRC,  RBRC,  LCBR,  RCBR,\
+       TRNS,  TRNS,     1,     2,     3,  TRNS,                   LPRN,  RPRN,  LBRC,  RBRC,  LCBR,  RCBR,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,     4,     5,     6,   EQL,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
@@ -87,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TILD,  EXLM,    AT,  HASH,   DLR,  BSPC,\
+        ESC,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TILD,  EXLM,    AT,  HASH,   DLR,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   PERC,  CIRC,  AMPR,  ASTR,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
