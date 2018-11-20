@@ -34,9 +34,14 @@ enum custom_keycodes {
   INSERT,
   NORMAL,
   VISUAL,
+
   LOWER,
   RAISE,
   ADJUST,
+
+  VISUAL_CUT,
+  VISUAL_YANK,
+
   BACKLIT,
   RGBRST
 };
@@ -66,6 +71,8 @@ enum macro_keycodes {
 #define KC_NORMAL NORMAL
 #define KC_INSERT INSERT
 #define KC_VISUAL VISUAL
+#define KC_V_CUT VISUAL_CUT
+#define KC_V_YANK VISUAL_YANK
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -94,9 +101,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_VISUAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 V_YANK,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
+       TRNS,  TRNS,  TRNS, V_CUT,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS,  TRNS,NORMAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -186,6 +193,50 @@ void matrix_scan_user(void) {
    iota_gfx_task();
 }
 
+#define L_BASE 0
+#define L_NORMAL (1<<_NORMAL)
+#define L_INSERT (1<<_INSERT)
+#define L_VISUAL (1<<_VISUAL)
+#define L_LOWER (1<<_LOWER)
+#define L_RAISE (1<<_RAISE)
+#define L_ADJUST (1<<_ADJUST)
+#define L_ADJUST_TRI (L_ADJUST|L_RAISE|L_LOWER)
+
+char layer_state_str[24];
+
+const char *read_layer_state(void) {
+  switch (layer_state)
+  {
+  case L_BASE:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Insert");
+    break;
+  case L_RAISE:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Raise");
+    break;
+  case L_LOWER:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Lower");
+    break;
+  case L_ADJUST:
+  case L_ADJUST_TRI:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Adjust");
+    break;
+  case L_INSERT:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Insert");
+    break;
+  case L_NORMAL:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Normal");
+    break;
+  case L_VISUAL:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Visual");
+    break;
+
+  default:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state);
+  }
+
+  return layer_state_str;
+}
+
 void matrix_render_user(struct CharacterMatrix *matrix) {
   if (is_master) {
     // If you want to change the display of OLED, you need to change here
@@ -237,7 +288,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         layer_off(_INSERT);
         layer_off(_VISUAL);
+        SEND_STRING(SS_UP(X_LSHIFT));
         layer_on(_NORMAL);
+      }
+      return false;
+      break;
+    case VISUAL:
+      if (record->event.pressed) {
+        layer_off(_INSERT);
+        layer_off(_NORMAL);
+        layer_on(_VISUAL);
+        SEND_STRING(SS_DOWN(X_LSHIFT));
       }
       return false;
       break;
@@ -288,6 +349,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       #endif
       break;
+    case VISUAL_CUT:
+        if (record->event.pressed) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_LGUI("x"));
+          layer_off(_VISUAL);
+          layer_on(_NORMAL);
+          return false;
+        }
+        break;
+    case VISUAL_YANK:
+        if (record->event.pressed) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_LGUI("c"));
+          SEND_STRING(SS_TAP(X_RIGHT));
+          layer_off(_VISUAL);
+          layer_on(_NORMAL);
+          return false;
+        }
+        break;
   }
   return true;
 }
