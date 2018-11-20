@@ -8,6 +8,11 @@
   #include "ssd1306.h"
 #endif
 
+#include "./config.h"
+#include "quantum.h"
+#include "action.h"
+#include "process_keycode/process_tap_dance.h"
+
 extern keymap_config_t keymap_config;
 
 #ifdef RGBLIGHT_ENABLE
@@ -50,8 +55,40 @@ enum custom_keycodes {
   RGBRST
 };
 
-enum macro_keycodes {
-  KC_SAMPLEMACRO,
+enum tap_dance_keycodes {
+  VIM_DD,
+  VIM_YY,
+};
+
+void vim_dd (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    SEND_STRING(SS_LGUI(SS_TAP(X_LEFT)));
+    SEND_STRING(SS_DOWN(X_LSHIFT));
+    SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
+    SEND_STRING(SS_UP(X_LSHIFT));
+    SEND_STRING(SS_LGUI("x"));
+    SEND_STRING(SS_TAP(X_DELETE));
+    reset_tap_dance (state);
+  }
+}
+
+void vim_yy (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    SEND_STRING(SS_LGUI(SS_TAP(X_LEFT)));
+    SEND_STRING(SS_DOWN(X_LSHIFT));
+    SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
+    SEND_STRING(SS_TAP(X_DOWN));
+    SEND_STRING(SS_UP(X_LSHIFT));
+    SEND_STRING(SS_LGUI("c"));
+    reset_tap_dance (state);
+  } else {
+    SEND_STRING(SS_LGUI("c"));
+  }
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+  [VIM_DD]  =  ACTION_TAP_DANCE_FN (vim_dd),
+  [VIM_YY]  =  ACTION_TAP_DANCE_FN (vim_yy),
 };
 
 #define KC______ KC_TRNS
@@ -81,6 +118,8 @@ enum macro_keycodes {
 #define KC_VIM_U VIM_U
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
+#define KC_VIM_DD TD(VIM_DD)
+#define KC_VIM_YY TD(VIM_YY)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -97,9 +136,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NORMAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 V_YANK, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
+        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 VIM_YY, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LCTL, VIM_A,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
+       LCTL, VIM_A,  TRNS,VIM_DD,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT,  TRNS,   DEL,  TRNS,VISUAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
