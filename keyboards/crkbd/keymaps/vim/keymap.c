@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NORMAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
+        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 V_YANK, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL, VIM_A,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
