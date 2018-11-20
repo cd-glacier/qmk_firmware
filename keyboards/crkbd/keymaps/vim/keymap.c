@@ -33,6 +33,7 @@ enum custom_keycodes {
   BASE = SAFE_RANGE,
   INSERT,
   NORMAL,
+  VISUAL,
   LOWER,
   RAISE,
   ADJUST,
@@ -64,6 +65,7 @@ enum macro_keycodes {
 
 #define KC_NORMAL NORMAL
 #define KC_INSERT INSERT
+#define KC_VISUAL VISUAL
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -84,9 +86,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       LSFT,  TRNS,  TRNS,  TRNS,VISUAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                    LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
+                              //`--------------------'  `--------------------'
+  ),
+
+  [_VISUAL] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       TRNS,  TRNS,  TRNS,  TRNS,NORMAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                 NORMAL, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
   ),
 
