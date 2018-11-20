@@ -41,6 +41,8 @@ enum custom_keycodes {
 
   VIM_A,
   VIM_O,
+  VIM_P,
+  VIM_U,
   VISUAL_CUT,
   VISUAL_YANK,
 
@@ -75,6 +77,8 @@ enum macro_keycodes {
 #define KC_VISUAL VISUAL
 #define KC_VIM_A VIM_A
 #define KC_VIM_O VIM_O
+#define KC_VIM_P VIM_P
+#define KC_VIM_U VIM_U
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
 
@@ -93,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NORMAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,INSERT, VIM_O,  TRNS,  BSPC,\
+        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL, VIM_A,  TRNS,  TRNS,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
@@ -367,6 +371,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_ENTER));
           layer_off(_NORMAL);
           layer_on(_INSERT);
+          return false;
+        }
+        break;
+    case VIM_P:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("v"));
+          return false;
+        }
+        break;
+    case VIM_U:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("z"));
           return false;
         }
         break;
