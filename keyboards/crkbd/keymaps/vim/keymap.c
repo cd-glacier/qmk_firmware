@@ -120,6 +120,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_V_YANK VISUAL_YANK
 #define KC_VIM_DD TD(VIM_DD)
 #define KC_VIM_YY TD(VIM_YY)
+#define KC_SC_MAX LGUI(LALT(KC_UP))
+#define KC_SC_LEFT LGUI(LALT(KC_LEFT))
+#define KC_SC_RIGHT LGUI(LALT(KC_RIGHT))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -184,13 +187,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        RST,  LRST, XXXXX, XXXXX, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                     F1,   F2,    F10,   F11,   F12, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LTOG,  LHUI,  LSAI,  LVAI, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                SC_LEFT,XXXXX,SC_MAX,SC_RIGHT,XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      LSMOD,  LHUD,  LSAD,  LVAD, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  GUIEI, LOWER,   SPC,      ENT, RAISE, ALTKN \
+                                   LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
   )
 };
