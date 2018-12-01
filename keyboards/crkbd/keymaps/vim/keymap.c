@@ -124,6 +124,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_SC_LEFT LGUI(LALT(KC_LEFT))
 #define KC_SC_RIGHT LGUI(LALT(KC_RIGHT))
 #define KC_DEV_TOOL LGUI(LALT(KC_I))
+#define KC_CSF LGUI(LSFT(KC_F))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_INSERT] = LAYOUT_kc( \
@@ -190,7 +191,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
       XXXXX, SLCK,  PAUS,_MUTE,_VOLDOWN,_VOLUP,                  XXXXX,XXXXX,DEV_TOOL,XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                SC_LEFT,XXXXX,SC_MAX,SC_RIGHT,XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX,   CSF, XXXXX,                SC_LEFT,XXXXX,SC_MAX,SC_RIGHT,XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
