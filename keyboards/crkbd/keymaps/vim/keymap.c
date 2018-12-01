@@ -61,6 +61,7 @@ enum custom_keycodes {
 enum tap_dance_keycodes {
   VIM_DD,
   VIM_YY,
+  VIM_ZZ,
 };
 
 void vim_dd (qk_tap_dance_state_t *state, void *user_data) {
@@ -89,9 +90,18 @@ void vim_yy (qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
+void vim_zz (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    SEND_STRING(SS_LCTRL(SS_TAP(X_L)));
+    reset_tap_dance (state);
+  } else {
+  }
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
   [VIM_DD]  =  ACTION_TAP_DANCE_FN (vim_dd),
   [VIM_YY]  =  ACTION_TAP_DANCE_FN (vim_yy),
+  [VIM_ZZ]  =  ACTION_TAP_DANCE_FN (vim_zz),
 };
 
 #define KC______ KC_TRNS
@@ -126,6 +136,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_V_YANK VISUAL_YANK
 #define KC_VIM_DD TD(VIM_DD)
 #define KC_VIM_YY TD(VIM_YY)
+#define KC_VIM_ZZ TD(VIM_ZZ)
 #define KC_SC_MAX LGUI(LALT(KC_UP))
 #define KC_SC_LEFT LGUI(LALT(KC_LEFT))
 #define KC_SC_RIGHT LGUI(LALT(KC_RIGHT))
@@ -151,7 +162,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL, VIM_A,  TRNS,VIM_DD,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,  TRNS,   DEL,  TRNS,VISUAL, VIM_B,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       LSFT,VIM_ZZ,   DEL,  TRNS,VISUAL, VIM_B,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                    LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
