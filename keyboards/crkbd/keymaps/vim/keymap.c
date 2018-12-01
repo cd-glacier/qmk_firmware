@@ -45,9 +45,12 @@ enum custom_keycodes {
   ADJUST,
 
   VIM_A,
+  VIM_B,
+  VIM_E,
   VIM_O,
   VIM_P,
   VIM_U,
+  VIM_W,
   VISUAL_CUT,
   VISUAL_YANK,
 
@@ -113,9 +116,12 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_INSERT INSERT
 #define KC_VISUAL VISUAL
 #define KC_VIM_A VIM_A
+#define KC_VIM_B VIM_B
+#define KC_VIM_E VIM_E
 #define KC_VIM_O VIM_O
 #define KC_VIM_P VIM_P
 #define KC_VIM_U VIM_U
+#define KC_VIM_W VIM_W
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
 #define KC_VIM_DD TD(VIM_DD)
@@ -141,11 +147,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NORMAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        TAB,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 VIM_YY, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
+        TAB,  TRNS, VIM_W, VIM_E,  TRNS,  TRNS,                 VIM_YY, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL, VIM_A,  TRNS,VIM_DD,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,  TRNS,   DEL,  TRNS,VISUAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       LSFT,  TRNS,   DEL,  TRNS,VISUAL, VIM_B,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                    LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
@@ -412,9 +418,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case VIM_A:
         if (record->event.pressed) {
-          SEND_STRING (SS_TAP(X_RIGHT));
+          SEND_STRING(SS_TAP(X_RIGHT));
           layer_off(_NORMAL);
           layer_on(_INSERT);
+        }
+        return false;
+        break;
+    case VIM_B:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LALT(SS_TAP(X_LEFT)));
+        }
+        return false;
+        break;
+    case VIM_E:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
         }
         return false;
         break;
@@ -438,6 +456,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LGUI("z"));
           return false;
         }
+        break;
+    case VIM_W:
+        if (record->event.pressed) {
+          SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
+          SEND_STRING(SS_TAP(X_RIGHT));
+        }
+        return false;
         break;
     case VISUAL_CUT:
         if (record->event.pressed) {
