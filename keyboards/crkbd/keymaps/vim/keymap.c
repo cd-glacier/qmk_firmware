@@ -33,12 +33,14 @@ enum layer_number {
     _LOWER,
     _RAISE,
     _ADJUST,
+    _VIM_D,
 };
 enum custom_keycodes {
   BASE = SAFE_RANGE,
   INSERT,
   NORMAL,
   VISUAL,
+  VIM_D,
 
   LOWER,
   RAISE,
@@ -46,6 +48,8 @@ enum custom_keycodes {
 
   VIM_A,
   VIM_B,
+  VIM_DD,
+  VIM_DW,
   VIM_E,
   VIM_O,
   VIM_P,
@@ -59,22 +63,9 @@ enum custom_keycodes {
 };
 
 enum tap_dance_keycodes {
-  VIM_DD,
   VIM_YY,
   VIM_ZZ,
 };
-
-void vim_dd (qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 2) {
-    SEND_STRING(SS_LGUI(SS_TAP(X_LEFT)));
-    SEND_STRING(SS_DOWN(X_LSHIFT));
-    SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
-    SEND_STRING(SS_UP(X_LSHIFT));
-    SEND_STRING(SS_LGUI("x"));
-    SEND_STRING(SS_TAP(X_DELETE));
-    reset_tap_dance (state);
-  }
-}
 
 void vim_yy (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count >= 2) {
@@ -99,7 +90,6 @@ void vim_zz (qk_tap_dance_state_t *state, void *user_data) {
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [VIM_DD]  =  ACTION_TAP_DANCE_FN (vim_dd),
   [VIM_YY]  =  ACTION_TAP_DANCE_FN (vim_yy),
   [VIM_ZZ]  =  ACTION_TAP_DANCE_FN (vim_zz),
 };
@@ -127,6 +117,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_VISUAL VISUAL
 #define KC_VIM_A VIM_A
 #define KC_VIM_B VIM_B
+#define KC_VIM_D VIM_D
+#define KC_VIM_DD VIM_DD
+#define KC_VIM_DW VIM_DW
 #define KC_VIM_E VIM_E
 #define KC_VIM_O VIM_O
 #define KC_VIM_P VIM_P
@@ -134,7 +127,6 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_VIM_W VIM_W
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
-#define KC_VIM_DD TD(VIM_DD)
 #define KC_VIM_YY TD(VIM_YY)
 #define KC_VIM_ZZ TD(VIM_ZZ)
 #define KC_SC_MAX LGUI(LALT(KC_UP))
@@ -150,9 +142,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LCTL,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  QUOT,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  MINS,\
+       MINS,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  RGUI,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                 NORMAL, LOWER,   SPC,      ENT, RAISE,  RGUI\
+                                 NORMAL, LOWER,   SPC,      ENT, RAISE,  LSFT\
                               //`--------------------'  `--------------------'
   ),
 
@@ -160,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
         TAB,  TRNS, VIM_W, VIM_E,  TRNS,  TRNS,                 VIM_YY, VIM_U,INSERT, VIM_O, VIM_P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LCTL, VIM_A,  TRNS,VIM_DD,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
+       LCTL, VIM_A,  TRNS, VIM_D,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT,VIM_ZZ,   DEL,  TRNS,VISUAL, VIM_B,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -175,6 +167,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        TRNS,  TRNS,  TRNS, V_CUT,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS,  TRNS,NORMAL,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                 NORMAL, LOWER,   SPC,      ENT, RAISE,  RGUI\
+                              //`--------------------'  `--------------------'
+  ),
+
+  [_VIM_D] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+       TRNS,  TRNS,VIM_DW,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       TRNS,  TRNS,  TRNS,VIM_DD,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                  NORMAL, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
@@ -266,6 +270,7 @@ void matrix_scan_user(void) {
 #define L_NORMAL (1<<_NORMAL)
 #define L_INSERT (1<<_INSERT)
 #define L_VISUAL (1<<_VISUAL)
+#define L_VIM_D (1<<_VIM_D)
 #define L_LOWER (1<<_LOWER)
 #define L_RAISE (1<<_RAISE)
 #define L_ADJUST (1<<_ADJUST)
@@ -297,6 +302,9 @@ const char *read_layer_state(void) {
     break;
   case L_VISUAL:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Visual");
+    break;
+  case L_VIM_D:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Vim d");
     break;
 
   default:
@@ -357,6 +365,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         layer_off(_INSERT);
         layer_off(_VISUAL);
+        layer_off(_VIM_D);
         SEND_STRING(SS_UP(X_LSHIFT));
         layer_on(_NORMAL);
       }
@@ -441,6 +450,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
+    case VIM_D:
+      if (record->event.pressed) {
+        layer_off(_NORMAL);
+        layer_on(_VIM_D);
+      }
+      return false;
+      break;
+    case VIM_DD:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI(SS_TAP(X_LEFT)));
+        SEND_STRING(SS_DOWN(X_LSHIFT));
+        SEND_STRING(SS_LGUI(SS_TAP(X_RIGHT)));
+        SEND_STRING(SS_UP(X_LSHIFT));
+        SEND_STRING(SS_LGUI("x"));
+        SEND_STRING(SS_TAP(X_DELETE));
+        layer_off(_VIM_D);
+        layer_on(_NORMAL);
+      }
+      return false;
+      break;
+    case VIM_DW:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LSHIFT));
+        SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
+        SEND_STRING(SS_TAP(X_RIGHT));
+        SEND_STRING(SS_UP(X_LSHIFT));
+        SEND_STRING(SS_LGUI("x"));
+        layer_off(_VIM_D);
+        layer_on(_NORMAL);
+      }
+      return false;
+      break;
     case VIM_E:
         if (record->event.pressed) {
           SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
