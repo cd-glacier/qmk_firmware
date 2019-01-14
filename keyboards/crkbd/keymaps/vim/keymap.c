@@ -57,6 +57,7 @@ enum custom_keycodes {
   VIM_W,
   VISUAL_CUT,
   VISUAL_YANK,
+  VISUAL_PASTE,
 
   BACKLIT,
   RGBRST
@@ -128,6 +129,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_VIM_W VIM_W
 #define KC_V_CUT VISUAL_CUT
 #define KC_V_YANK VISUAL_YANK
+#define KC_V_PASTE VISUAL_PASTE
 #define KC_VIM_YY TD(VIM_YY)
 #define KC_VIM_ZZ TD(VIM_ZZ)
 #define KC_SC_MAX LGUI(LALT(KC_UP))
@@ -163,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_VISUAL] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 V_YANK,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                 V_YANK,  TRNS,  TRNS,  TRNS,V_PASTE, TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS, V_CUT,  TRNS,  TRNS,                   LEFT,  DOWN,    UP, RIGHT,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
@@ -531,6 +533,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_UP(X_LSHIFT));
           SEND_STRING(SS_LGUI("c"));
           SEND_STRING(SS_TAP(X_RIGHT));
+          layer_off(_VISUAL);
+          layer_on(_NORMAL);
+          return false;
+        }
+        break;
+    case VISUAL_PASTE:
+        if (record->event.pressed) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_LGUI("v"));
           layer_off(_VISUAL);
           layer_on(_NORMAL);
           return false;
