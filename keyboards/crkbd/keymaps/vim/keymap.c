@@ -111,6 +111,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_CTLTB CTL_T(KC_TAB)
 #define KC_GUIEI GUI_T(KC_LANG2)
 #define KC_ALTKN ALT_T(KC_LANG1)
+#define KC_GUENT LGUI(KC_ENT)
 
 #define KC_NORMAL NORMAL
 #define KC_INSERT INSERT
@@ -192,7 +193,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,     7,     8,     9,     0,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LALT, LOWER,   SPC,     ENT,  RAISE,  RGUI\
+                                   LALT, LOWER,   SPC,     GUENT,  RAISE,  RGUI\
                               //`--------------------'  `--------------------'
   ),
 
