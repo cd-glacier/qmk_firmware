@@ -208,9 +208,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
       XXXXX, SLCK,  PAUS,_MUTE,_VOLDOWN,_VOLUP,                  XXXXX,XXXXX,DEV_TOOL,XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      XXXXX, XXXXX, XXXXX, XXXXX,   CSF, XXXXX,                SC_LEFT,XXXXX,SC_MAX,SC_RIGHT,XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX,   CSF, XXXXX,                  XXXXX,PGDOWN,  PGUP, XXXXX, XXXXX, XXXXX,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                SC_LEFT,XXXXX,SC_MAX,SC_RIGHT,XXXXX, XXXXX,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                    LALT, LOWER,   SPC,      ENT, RAISE,  RGUI\
                               //`--------------------'  `--------------------'
