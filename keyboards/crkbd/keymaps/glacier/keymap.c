@@ -90,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------.                ,-----------------------------------------.
        TRNS,  TRNS,     1,     2,     3,  PLUS,                   LPRN,  RPRN,  LBRC,  RBRC,  LCBR,  RCBR,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       TRNS,  TRNS,     4,     5,     6,   EQL,                   LEFT,  DOWN,    UP, RIGHT,   ESC,  PIPE,\
+       TRNS,  TRNS,     4,     5,     6,  PERC,                   LEFT,  DOWN,    UP, RIGHT,   ESC,  PIPE,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,     7,     8,     9,     0,                   TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
@@ -100,9 +100,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        ESC,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   TILD,  EXLM,    AT,  HASH,   DLR,  BSPC,\
+        ESC,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   EXLM,  EQL,   TILD,  CIRC,  AMPR,  PIPE,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                   PERC,  CIRC,  AMPR,  ASTR,  TRNS,  TRNS,\
+       TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                    DLR,    AT,  HASH,  ASTR,  TRNS,  TRNS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        TRNS,  TRNS,  TRNS,  TRNS,  TRNS,  TRNS,                    GRV,  BSLS,  TRNS,  TRNS,  TRNS,  TRNS,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
