@@ -62,9 +62,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       KC_TRNS, KC_TRNS,    KC_1,    KC_2,    KC_3, KC_PLUS,                      KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_TRNS, KC_TRNS,    KC_4,    KC_5,    KC_6, KC_PERC,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT,  KC_ESC, KC_PIPE,
+      KC_LGUI, KC_TRNS,    KC_4,    KC_5,    KC_6, KC_PERC,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT,  KC_ESC, KC_PIPE,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_TRNS, KC_TRNS,    KC_7,    KC_8,    KC_9,    KC_0,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+      KC_LSFT, KC_TRNS,    KC_7,    KC_8,    KC_9,    KC_0,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LALT,KC_LOWER,  KC_SPC,   KC_GUENT,KC_RAISE,KC_RGUI
                                       //`--------------------------'  `--------------------------'
